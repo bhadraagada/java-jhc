@@ -7,6 +7,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.sound.sampled.*;
 import javax.swing.filechooser.*;
+import javax.swing.filechooser.FileFilter;
 
 public class AudioPlayerGUI extends JFrame implements ActionListener {
   private AudioPlayer player = new AudioPlayer();
@@ -182,7 +183,7 @@ public class AudioPlayerGUI extends JFrame implements ActionListener {
           player.load(audioFilePath);
           timer.setAudioClip(player.getAudioClip());
           labelFileName.setText("Playing File: " + audioFilePath);
-          silderTime.setMaximum((int) player.getClipSecondLength());
+          sliderTime.setMaximum((int) player.getClipSecondLength());
 
           labelDuration.setText(player.getClipLengthString());
           player.play();
@@ -198,7 +199,10 @@ public class AudioPlayerGUI extends JFrame implements ActionListener {
               "Could not play the audio file because line is unavailable!", "Error", JOptionPane.ERROR_MESSAGE);
           resetControls();
           ex.printStackTrace();
-        }
+        } catch (IOException ex) {
+          JOptionPane.showMessageDialog(AudioPlayerGUI.this, "I/O error while playing the audio file!", "Error",
+              JOptionPane.ERROR_MESSAGE);
+          }
       }
     });
     playbackThread.start();
